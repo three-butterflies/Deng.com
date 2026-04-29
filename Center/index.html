@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>导航页 · Navigation</title>
+
+    <style>
+        :root {
+            /* 浅色主题 */
+            --bg: #f5f3f0;
+            --bg-card: #ffffff;
+            --bg-card-hover: #fefefe;
+            --bg-setting: 《#f0edea;
+            --text-primary: #2c2c2c;
+            --text-secondary: #6b6b6b;
+            --text-tertiary: #999999;
+            --border: #e8e4df;
+            --border-card: #ece8e3;
+            --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 8px rgba(0, 0, 0, 0.04);
+            --shadow-card-hover: 0 4px 20px rgba(0, 0, 0, 0.08), 0 2px 10px rgba(0, 0, 0, 0.04);
+            --shadow-ring: 0 2px 12px rgba(0, 0, 0, 0.07);
+            --accent: #5b7b94;
+            --accent-soft: #7a9bb5;
+            --accent-bg: #edf3f7;
+            --warning: #c77d5a;
+            --warning-bg: #fdf0e8;
+            --ring-track: #e0dbd5;
+            --ring-active: #5b7b94;
+            --ring-warning: #c77d5a;
+            --tag-default-bg: #edf3f7;
+            --tag-default-text: #5b7b94;
+            --divider: #e8e4df;
+            --focus-ring: rgba(91, 123, 148, 0.3);
+            --overlay: rgba(245, 243, 240, 0.7);
+            --select-bg: #ffffff;
+            --slider-track: #e0dbd5;
+            --slider-fill: #5b7b94;
+            --btn-hover-bg: #ebe7e2;
+            --font-base: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+            --font-size-base: 16px;
+            --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg: #1a1a1c;
+            --bg-card: #242426;
+            --bg-card-hover: #2a2a2d;
+            --bg-setting: #1e1e20;
+            --text-primary: #e4e4e4;
+            --text-secondary: #aaaaaa;
+            --text-tertiary: #7a7a7a;
+            --border: #333335;
+            --border-card: #2e2e30;
+            --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 8px rgba(0, 0, 0, 0.2);
+            --shadow-card-hover: 0 4px 24px rgba(0, 0, 0, 0.45), 0 2px 10px rgba(0, 0, 0, 0.3);
+            --shadow-ring: 0 2px 16px rgba(0, 0, 0, 0.4);
+            --accent: #8ab4d0;
+            --accent-soft: #a3c8df;
+            --accent-bg: #1e2a32;
+            --warning: #d4946e;
+            --warning-bg: #2e2219;
+            --ring-track: #3a3a3d;
+            --ring-active: #8ab4d0;
+            --ring-warning: #d4946e;
+            --tag-default-bg: #1e2a32;
+            --tag-default-text: #8ab4d0;
+            --divider: #333335;
+            --focus-ring: rgba(138, 180, 208, 0.35);
+            --overlay: rgba(26, 26, 28, 0.75);
+            --select-bg: #2a2a2d;
+            --slider-track: #3a3a3d;
+            --slider-fill: #8ab4d0;
+            --btn-hover-bg: #2e2e30;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: var(--font-size-base);
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: var(--font-base);
+            background-color: var(--bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+            transition: background-color var(--transition-smooth), color var(--transition-smooth);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* 主容器 */
+        .main-container {
+            width: 100%;
+            max-width: 680px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2.5rem;
+            position: relative;
+        }
+
+        /* 头部区域 */
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+            text-align: center;
+        }
+
+        .header-icon {
+            font-size: 2.8rem;
+            line-height: 1;
+            animation: floatIn 0.7s var(--transition-bounce) both;
+            filter: grayscale(0.1);
+        }
+
+        @keyframes floatIn {
+            from {
+                opacity: 0;
+                transform: translateY(16px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .header-title {
+            font-size: 1.6rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            animation: floatIn 0.7s var(--transition-bounce) 0.08s both;
+        }
+
+        .header-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-tertiary);
+            font-weight: 400;
+            letter-spacing: 0.01em;
+            animation: floatIn 0.7s var(--transition-bounce) 0.14s both;
+        }
+
+        /* 倒计时区域 */
+        .countdown-area {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.9rem 1.4rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 40px;
+            box-shadow: var(--shadow-ring);
+            transition: all var(--transition-smooth);
+            animation: floatIn 0.7s var(--transition-bounce) 0.2s both;
+            position: relative;
+        }
+
+        .countdown-area.warning-state {
+            border-color: transparent;
+            background: var(--warning-bg);
+            box-shadow: 0 0 0 3px rgba(199, 125, 90, 0.12), var(--shadow-ring);
+        }
+
+        .countdown-ring-container {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+        }
+
+        .countdown-ring-svg {
+            width: 48px;
+            height: 48px;
+            transform: rotate(-90deg);
+            display: block;
+        }
+
+        .countdown-ring-track {
+            fill: none;
+            stroke: var(--ring-track);
+            stroke-width: 4;
+            transition: stroke var(--transition-smooth);
+        }
+
+        .countdown-ring-fill {
+            fill: none;
+            stroke: var(--ring-active);
+            stroke-width: 4;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1s linear, stroke var(--transition-smooth);
+        }
+
+        .warning-state .countdown-ring-fill {
+            stroke: var(--ring-warning);
+            transition: stroke-dashoffset 0.6s linear, stroke var(--transition-fast);
+        }
+
+        .countdown-number {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            transition: color var(--transition-smooth);
+            font-variant-numeric: tabular-nums;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+        }
+
+        .warning-state .countdown-number {
+            color: var(--warning);
+            animation: pulse-warning 0.8s ease-in-out infinite;
+        }
+
+        @keyframes pulse-warning {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .countdown-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            transition: color var(--transition-smooth);
+            font-weight: 450;
+        }
+
+        .warning-state .countdown-text {
+            color: var(--warning);
+        }
+
+        .countdown-destination {
+            font-weight: 600;
+            color: var(--text-primary);
+            transition: color var(--transition-smooth);
+        }
+
+        .warning-state .countdown-destination {
+            color: var(--warning);
+        }
+
+        /* 分组标签 */
+        .section-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-tertiary);
+            font-weight: 500;
+            margin-bottom: 0.6rem;
+            padding-left: 0.3rem;
+            transition: color var(--transition-smooth);
+        }
+
+        /* 站点卡片网格 */
+        .sites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 0.8rem;
+            width: 100%;
+        }
+
+        .site-card {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            padding: 0.85rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all var(--transition-fast);
+            box-shadow: var(--shadow-card);
+            position: relative;
+            -webkit-tap-highlight-color: transparent;
+            animation: cardFadeIn 0.5s var(--transition-bounce) both;
+            outline: none;
+        }
+
+        .site-card:focus-visible {
+            box-shadow: 0 0 0 3px var(--focus-ring), var(--shadow-card-hover);
+        }
+
+        @keyframes cardFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .site-card:hover {
+            background: var(--bg-card-hover);
+            box-shadow: var(--shadow-card-hover);
+            transform: translateY(-2px);
+            border-color: var(--accent-soft);
+            transition: all var(--transition-bounce);
+        }
+
+        .site-card:active {
+            transform: scale(0.97);
+            transition: transform 0.1s ease;
+        }
+
+        .site-card.default-target {
+            border-color: var(--accent-soft);
+            background: var(--accent-bg);
+            box-shadow: 0 0 0 1px rgba(91, 123, 148, 0.15), var(--shadow-card);
+        }
+
+        [data-theme="dark"] .site-card.default-target {
+            box-shadow: 0 0 0 1px rgba(138, 180, 208, 0.2), var(--shadow-card);
+        }
+
+        .site-card.default-target:hover {
+            box-shadow: 0 0 0 1px rgba(91, 123, 148, 0.25), var(--shadow-card-hover);
+        }
+
+        [data-theme="dark"] .site-card.default-target:hover {
+            box-shadow: 0 0 0 1px rgba(138, 180, 208, 0.3), var(--shadow-card-hover);
+        }
+
+        .site-card-icon {
+            font-size: 1.35rem;
+            flex-shrink: 0;
+            line-height: 1;
+            transition: transform var(--transition-fast);
+        }
+
+        .site-card:hover .site-card-icon {
+            transform: scale(1.15);
+            transition: transform var(--transition-bounce);
+        }
+
+        .site-card-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+            min-width: 0;
+        }
+
+        .site-card-name {
+            font-size: 0.9rem;
+            font-weight: 550;
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .site-card-tag {
+            font-size: 0.65rem;
+            color: var(--tag-default-text);
+            background: var(--tag-default-bg);
+            padding: 0.15rem 0.5rem;
+            border-radius: 10px;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+            align-self: flex-start;
+            transition: all var(--transition-smooth);
+        }
+
+        .site-card-url-hint {
+            font-size: 0.68rem;
+            color: var(--text-tertiary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            letter-spacing: 0.01em;
+            transition: color var(--transition-smooth);
+        }
+
+        /* 设置栏 */
+        .settings-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 0.7rem 1.2rem;
+            background: var(--bg-setting);
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            transition: all var(--transition-smooth);
+            animation: floatIn 0.7s var(--transition-bounce) 0.3s both;
+        }
+
+        .settings-divider {
+            width: 1px;
+            height: 20px;
+            background: var(--divider);
+            flex-shrink: 0;
+            border-radius: 1px;
+            transition: background var(--transition-smooth);
+        }
+
+        .setting-group {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            flex-shrink: 0;
+        }
+
+        .setting-label {
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            white-space: nowrap;
+            transition: color var(--transition-smooth);
+        }
+
+        /* 主题切换按钮 */
+        .theme-toggle {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1.5px solid var(--border);
+            background: var(--bg-card);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: all var(--transition-bounce);
+            flex-shrink: 0;
+            outline: none;
+            position: relative;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .theme-toggle:hover {
+            background: var(--btn-hover-bg);
+            border-color: var(--accent-soft);
+            transform: rotate(15deg);
+        }
+        .theme-toggle:active {
+            transform: rotate(30deg) scale(0.9);
+            transition: all 0.1s ease;
+        }
+        .theme-toggle:focus-visible {
+            box-shadow: 0 0 0 3px var(--focus-ring);
+        }
+
+        .theme-toggle .icon-sun,
+        .theme-toggle .icon-moon {
+            position: absolute;
+            transition: all var(--transition-bounce);
+            line-height: 1;
+        }
+
+        [data-theme="light"] .theme-toggle .icon-moon {
+            opacity: 1;
+            transform: rotate(0deg) scale(1);
+        }
+        [data-theme="light"] .theme-toggle .icon-sun {
+            opacity: 0;
+            transform: rotate(-90deg) scale(0.5);
+        }
+        [data-theme="dark"] .theme-toggle .icon-sun {
+            opacity: 1;
+            transform: rotate(0deg) scale(1);
+        }
+        [data-theme="dark"] .theme-toggle .icon-moon {
+            opacity: 0;
+            transform: rotate(90deg) scale(0.5);
+        }
+
+        /* 字体选择下拉 */
+        .font-select {
+            appearance: none;
+            -webkit-appearance: none;
+            padding: 0.35rem 1.8rem 0.35rem 0.6rem;
+            font-size: 0.75rem;
+            border-radius: 16px;
+            border: 1.5px solid var(--border);
+            background: var(--select-bg);
+            color: var(--text-primary);
+            cursor: pointer;
+            font-family: inherit;
+            transition: all var(--transition-fast);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23888' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.5rem center;
+            background-size: 10px 6px;
+            outline: none;
+            min-width: 90px;
+        }
+
+        .font-select:hover {
+            border-color: var(--accent-soft);
+        }
+        .font-select:focus-visible {
+            box-shadow: 0 0 0 3px var(--focus-ring);
+            border-color: var(--accent);
+        }
+
+        /* 字号滑块 */
+        .font-size-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 70px;
+            height: 5px;
+            border-radius: 5px;
+            background: var(--slider-track);
+            outline: none;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: background var(--transition-fast);
+        }
+
+        .font-size-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 2px solid var(--accent);
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+            transition: all var(--transition-fast);
+        }
+        .font-size-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+        }
+        .font-size-slider::-webkit-slider-thumb:active {
+            transform: scale(0.95);
+            background: var(--accent-bg);
+        }
+
+        .font-size-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 2px solid var(--accent);
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .font-size-value {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            min-width: 28px;
+            text-align: center;
+            font-variant-numeric: tabular-nums;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            transition: color var(--transition-smooth);
+        }
+
+        /* 响应式 */
+        @media (max-width: 480px) {
+            body {
+                padding: 1.2rem 0.8rem;
+                justify-content: flex-start;
+                padding-top: 2.5rem;
+            }
+            .main-container {
+                gap: 1.8rem;
+                max-width: 100%;
+            }
+            .sites-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+            }
+            .site-card {
+                padding: 0.7rem 0.75rem;
+                border-radius: 12px;
+                gap: 0.5rem;
+            }
+            .site-card-icon {
+                font-size: 1.2rem;
+            }
+            .site-card-name {
+                font-size: 0.8rem;
+            }
+            .site-card-tag {
+                font-size: 0.6rem;
+                padding: 0.12rem 0.4rem;
+            }
+            .settings-bar {
+                gap: 0.4rem;
+                padding: 0.55rem 0.8rem;
+                border-radius: 24px;
+                flex-wrap: wrap;
+            }
+            .settings-divider {
+                height: 14px;
+            }
+            .font-size-slider {
+                width: 50px;
+            }
+            .font-select {
+                min-width: 70px;
+                font-size: 0.7rem;
+                padding: 0.3rem 1.5rem 0.3rem 0.5rem;
+            }
+            .countdown-area {
+                padding: 0.7rem 1rem;
+                gap: 0.6rem;
+                border-radius: 32px;
+            }
+            .countdown-ring-container {
+                width: 38px;
+                height: 38px;
+            }
+            .countdown-ring-svg {
+                width: 38px;
+                height: 38px;
+            }
+            .countdown-number {
+                font-size: 0.9rem;
+            }
+            .countdown-text {
+                font-size: 0.75rem;
+            }
+            .header-title {
+                font-size: 1.3rem;
+            }
+            .header-icon {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 350px) {
+            .sites-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.4rem;
+            }
+            .site-card {
+                padding: 0.6rem 0.6rem;
+                border-radius: 10px;
+            }
+            .site-card-name {
+                font-size: 0.73rem;
+            }
+            .site-card-icon {
+                font-size: 1rem;
+            }
+            .settings-bar {
+                gap: 0.3rem;
+                padding: 0.45rem 0.6rem;
+            }
+            .font-size-slider {
+                width: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <!-- 头部 -->
+        <header class="header">
+            <div class="header-icon">✦</div>
+            <h1 class="header-title">导航站</h1>
+            <p class="header-subtitle">个人站点 & 常用链接</p>
+        </header>
+
+        <!-- 倒计时区域 -->
+        <div class="countdown-area" id="countdownArea">
+            <div class="countdown-ring-container">
+                <svg class="countdown-ring-svg" viewBox="0 0 48 48">
+                    <circle class="countdown-ring-track" cx="24" cy="24" r="20" />
+                    <circle class="countdown-ring-fill" id="countdownRingFill" cx="24" cy="24" r="20"
+                    stroke-dasharray="125.66" stroke-dashoffset="0" />
+                </svg>
+                <span class="countdown-number" id="countdownNumber">5</span>
+            </div>
+            <span class="countdown-text">
+                无操作将前往
+                <span class="countdown-destination" id="countdownDest">—</span>
+            </span>
+        </div>
+
+        <!-- 子站区域 -->
+        <section style="width:100%;">
+            <div class="section-label">📌 子站</div>
+            <div class="sites-grid" id="subsitesGrid">
+                <!-- 由JS动态渲染 -->
+            </div>
+        </section>
+
+        <!-- 第三方站点区域 -->
+        <section style="width:100%;">
+            <div class="section-label">🔗 第三方站点</div>
+            <div class="sites-grid" id="thirdPartyGrid">
+                <!-- 由JS动态渲染 -->
+            </div>
+        </section>
+
+        <!-- 设置栏 -->
+        <div class="settings-bar" id="settingsBar">
+            <!-- 主题切换 -->
+            <button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题" title="切换明暗主题">
+                <span class="icon-sun">☀️</span>
+                <span class="icon-moon">🌙</span>
+            </button>
+
+            <span class="settings-divider"></span>
+
+            <!-- 字体选择 -->
+            <div class="setting-group">
+                <span class="setting-label">字体</span>
+                <select class="font-select" id="fontSelect" aria-label="选择字体类型">
+                    <option value="system">系统默认</option>
+                    <option value="serif">衬线体</option>
+                    <option value="mono">等宽体</option>
+                    <option value="rounded">柔和圆体</option>
+                </select>
+            </div>
+
+            <span class="settings-divider"></span>
+
+            <!-- 字号调节 -->
+            <div class="setting-group">
+                <span class="setting-label">字号</span>
+                <input type="range" class="font-size-slider" id="fontSizeSlider"
+                min="13" max="22" value="16" step="1"
+                aria-label="调节字体大小" title="字体大小">
+                <span class="font-size-value" id="fontSizeValue">16px</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ==================== 站点配置 ====================
+            // 修改以下数组来添加/删除站点，标记 default: true 的站点为自动跳转目标
+            const siteConfig = {
+                subsites: [
+                    { name: '博客', url: 'https://example.com/blog', icon: '📝', default: true,
+                        desc: '个人文章' },
+                    { name: '项目集', url: 'https://github.com', icon: '🚀', default: false,
+                        desc: '开源项目' },
+                    { name: '相册', url: 'https://photos.example.com', icon: '📷', default: false,
+                        desc: '生活记录' },
+                    { name: '笔记', url: 'https://notes.example.com', icon: '📋', default: false,
+                        desc: '知识库' },
+                ],
+                thirdParty: [
+                    { name: 'GitHub', url: 'https://github.com', icon: '💻', default: false,
+                    desc: '代码托管' },
+                    { name: 'Google', url: 'https://www.google.com', icon: '🔍', default: false,
+                        desc: '搜索引擎' },
+                    { name: 'Wikipedia', url: 'https://wikipedia.org', icon: '📚', default: false,
+                        desc: '百科' },
+                    { name: 'Gmail', url: 'https://mail.google.com', icon: '✉️', default: false,
+                        desc: '邮件' },
+                ]
+            };
+
+            // ==================== DOM元素 ====================
+            const countdownArea = document.getElementById('countdownArea');
+            const countdownRingFill = document.getElementById('countdownRingFill');
+            const countdownNumber = document.getElementById('countdownNumber');
+            const countdownDest = document.getElementById('countdownDest');
+            const subsitesGrid = document.getElementById('subsitesGrid');
+            const thirdPartyGrid = document.getElementById('thirdPartyGrid');
+            const themeToggle = document.getElementById('themeToggle');
+            const fontSelect = document.getElementById('fontSelect');
+            const fontSizeSlider = document.getElementById('fontSizeSlider');
+            const fontSizeValue = document.getElementById('fontSizeValue');
+            const settingsBar = document.getElementById('settingsBar');
+
+            // ==================== 常量和状态 ====================
+            const COUNTDOWN_SECONDS = 5;
+            const RING_CIRCUMFERENCE = 125.66; // 2 * π * 20 (r=20)
+            const STORAGE_KEYS = {
+                theme: 'navpage_theme',
+                fontSize: 'navpage_fontsize',
+                fontFamily: 'navpage_fontfamily',
+            };
+
+            let defaultSite = null;
+            let countdownRemaining = COUNTDOWN_SECONDS;
+            let countdownTimer = null;
+            let inactivityTimer = null;
+            let isCountdownActive = true;
+
+            // ==================== 查找默认跳转目标 ====================
+            function findDefaultSite() {
+                const allSites = [...siteConfig.subsites, ...siteConfig.thirdParty];
+                return allSites.find(s => s.default === true) || null;
+            }
+
+            defaultSite = findDefaultSite();
+
+            // ==================== 渲染站点卡片 ====================
+            function createSiteCard(site, index, totalCards) {
+                const card = document.createElement('a');
+                card.href = site.url;
+                card.className = 'site-card';
+                card.setAttribute('rel', 'noopener noreferrer');
+                card.setAttribute('aria-label', `前往 ${site.name}`);
+                card.style.animationDelay = `${0.05 * index}s`;
+
+                if (site.default) {
+                    card.classList.add('default-target');
+                }
+
+                const encodedUrl = site.url.replace(/^https?:\/\//, '');
+                const displayUrl = encodedUrl.length > 22 ? encodedUrl.substring(0, 22) + '…' :
+                encodedUrl;
+
+                card.innerHTML = `
+                    <span class="site-card-icon" aria-hidden="true">${site.icon}</span>
+                    <span class="site-card-info">
+                        <span class="site-card-name">${escapeHtml(site.name)}</span>
+                        <span class="site-card-url-hint">${escapeHtml(displayUrl)}</span>
+                    </span>
+                    ${site.default ? '<span class="site-card-tag">默认</span>' : ''}
+                `;
+
+                // 点击站点时停止自动跳转
+                card.addEventListener('click', () => {
+                    stopCountdown();
+                });
+
+                return card;
+            }
+
+            function escapeHtml(str) {
+                const div = document.createElement('div');
+                div.textContent = str;
+                return div.innerHTML;
+            }
+
+            function renderAllSites() {
+                subsitesGrid.innerHTML = '';
+                thirdPartyGrid.innerHTML = '';
+
+                siteConfig.subsites.forEach((site, i) => {
+                    subsitesGrid.appendChild(createSiteCard(site, i, siteConfig.subsites.length));
+                });
+
+                siteConfig.thirdParty.forEach((site, i) => {
+                    thirdPartyGrid.appendChild(createSiteCard(site, i + siteConfig.subsites.length,
+                        siteConfig.thirdParty.length));
+                });
+            }
+
+            // ==================== 倒计时逻辑 ====================
+            function updateCountdownDisplay() {
+                const offset = RING_CIRCUMFERENCE * (1 - countdownRemaining / COUNTDOWN_SECONDS);
+                countdownRingFill.style.strokeDashoffset = offset;
+                countdownNumber.textContent = countdownRemaining;
+
+                // 最后1秒警告状态
+                if (countdownRemaining <= 1) {
+                    countdownArea.classList.add('warning-state');
+                } else {
+                    countdownArea.classList.remove('warning-state');
+                }
+            }
+
+            function resetCountdown() {
+                countdownRemaining = COUNTDOWN_SECONDS;
+                updateCountdownDisplay();
+                countdownArea.classList.remove('warning-state');
+                isCountdownActive = true;
+                restartInactivityDetection();
+            }
+
+            function stopCountdown() {
+                isCountdownActive = false;
+                if (countdownTimer) {
+                    clearInterval(countdownTimer);
+                    countdownTimer = null;
+                }
+                if (inactivityTimer) {
+                    clearTimeout(inactivityTimer);
+                    inactivityTimer = null;
+                }
+                // 显示满环
+                countdownRemaining = COUNTDOWN_SECONDS;
+                countdownRingFill.style.strokeDashoffset = 0;
+                countdownNumber.textContent = COUNTDOWN_SECONDS;
+                countdownArea.classList.remove('warning-state');
+            }
+
+            function startCountdown() {
+                if (!defaultSite) return;
+                if (countdownTimer) clearInterval(countdownTimer);
+
+                countdownTimer = setInterval(() => {
+                    if (!isCountdownActive) return;
+                    countdownRemaining--;
+                    updateCountdownDisplay();
+
+                    if (countdownRemaining <= 0) {
+                        clearInterval(countdownTimer);
+                        countdownTimer = null;
+                        // 执行跳转
+                        performJump();
+                    }
+                }, 1000);
+            }
+
+            function performJump() {
+                if (defaultSite && defaultSite.url) {
+                    // 短暂的视觉反馈
+                    countdownNumber.textContent = '→';
+                    countdownArea.classList.add('warning-state');
+                    // 延迟一瞬后跳转，让用户看到最后的视觉变化
+                    setTimeout(() => {
+                        window.location.href = defaultSite.url;
+                    }, 150);
+                }
+            }
+
+            function restartInactivityDetection() {
+                if (inactivityTimer) clearTimeout(inactivityTimer);
+                if (!defaultSite) return;
+                if (!isCountdownActive) return;
+
+                // 无操作检测：使用比倒计时稍长的时间窗口
+                // 实际上倒计时本身就在递减，用户操作会重置倒计时
+                // 这里不需要额外的inactivityTimer，因为倒计时就是无操作计时器
+                // 用户操作 -> resetCountdown() -> 倒计时重新开始
+            }
+
+            // ==================== 用户活动检测 ====================
+            function handleUserActivity() {
+                if (!defaultSite) return;
+                if (!isCountdownActive) {
+                    // 如果倒计时被停止（用户点击了站点），重新激活
+                    isCountdownActive = true;
+                    startCountdown();
+                }
+                resetCountdown();
+            }
+
+            const activityEvents = [
+                'mousemove',
+                'mousedown',
+                'mouseup',
+                'click',
+                'keydown',
+                'keyup',
+                'scroll',
+                'touchstart',
+                'touchmove',
+                'touchend',
+                'wheel',
+                'pointermove',
+                'pointerdown',
+            ];
+
+            function bindActivityListeners() {
+                activityEvents.forEach(eventName => {
+                    document.addEventListener(eventName, handleUserActivity, { passive: true });
+                });
+                // 设置栏的交互也需要触发重置（部分事件可能冒泡不够及时）
+                settingsBar.addEventListener('click', handleUserActivity);
+                settingsBar.addEventListener('input', handleUserActivity);
+            }
+
+            function unbindActivityListeners() {
+                activityEvents.forEach(eventName => {
+                    document.removeEventListener(eventName, handleUserActivity, { passive: true });
+                });
+                settingsBar.removeEventListener('click', handleUserActivity);
+                settingsBar.removeEventListener('input', handleUserActivity);
+            }
+
+            // ==================== 主题管理 ====================
+            function getSystemTheme() {
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    return 'dark';
+                }
+                return 'light';
+            }
+
+            function applyTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem(STORAGE_KEYS.theme, theme);
+            }
+
+            function toggleTheme() {
+                const current = document.documentElement.getAttribute('data-theme');
+                const next = current === 'dark' ? 'light' : 'dark';
+                applyTheme(next);
+            }
+
+            function loadTheme() {
+                const saved = localStorage.getItem(STORAGE_KEYS.theme);
+                if (saved === 'light' || saved === 'dark') {
+                    applyTheme(saved);
+                } else {
+                    applyTheme(getSystemTheme());
+                }
+            }
+
+            // 监听系统主题变化
+            function bindSystemThemeListener() {
+                if (window.matchMedia) {
+                    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+                    mq.addEventListener('change', (e) => {
+                        // 只有在用户没有手动设置主题时才跟随系统
+                        const saved = localStorage.getItem(STORAGE_KEYS.theme);
+                        if (!saved) {
+                            applyTheme(e.matches ? 'dark' : 'light');
+                        }
+                    });
+                }
+            }
+
+            // ==================== 字体管理 ====================
+            const fontFamilyMap = {
+                system: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif',
+                serif: '"Noto Serif SC", "Songti SC", "STSong", Georgia, "Times New Roman", "SimSun", serif',
+                mono: '"SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", "Source Code Pro", "Courier New", monospace',
+                rounded: '"PingFang SC", "Microsoft YaHei", "Noto Sans SC", "Hiragino Sans GB", "STHeiti", system-ui, -apple-system, sans-serif',
+            };
+
+            function applyFontSize(size) {
+                document.documentElement.style.setProperty('--font-size-base', size + 'px');
+                fontSizeValue.textContent = size + 'px';
+                fontSizeSlider.value = size;
+                localStorage.setItem(STORAGE_KEYS.fontSize, size);
+            }
+
+            function applyFontFamily(familyKey) {
+                const family = fontFamilyMap[familyKey] || fontFamilyMap['system'];
+                document.documentElement.style.setProperty('--font-base', family);
+                fontSelect.value = familyKey;
+                localStorage.setItem(STORAGE_KEYS.fontFamily, familyKey);
+                // 更新body的font-family
+                document.body.style.fontFamily = family;
+            }
+
+            function loadFontSettings() {
+                const savedSize = localStorage.getItem(STORAGE_KEYS.fontSize);
+                const savedFamily = localStorage.getItem(STORAGE_KEYS.fontFamily);
+
+                const size = savedSize ? parseInt(savedSize, 10) : 16;
+                const family = savedFamily || 'system';
+
+                if (size >= 13 && size <= 22) {
+                    applyFontSize(size);
+                } else {
+                    applyFontSize(16);
+                }
+
+                applyFontFamily(family);
+            }
+
+            // ==================== 事件绑定 ====================
+            themeToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleTheme();
+                handleUserActivity();
+            });
+
+            fontSelect.addEventListener('change', () => {
+                applyFontFamily(fontSelect.value);
+                handleUserActivity();
+            });
+
+            fontSelect.addEventListener('click', (e) => {
+                e.stopPropagation();
+                handleUserActivity();
+            });
+
+            fontSizeSlider.addEventListener('input', () => {
+                applyFontSize(parseInt(fontSizeSlider.value, 10));
+                handleUserActivity();
+            });
+
+            fontSizeSlider.addEventListener('change', () => {
+                handleUserActivity();
+            });
+
+            // 防止设置栏的交互触发意外的页面跳转相关行为
+            settingsBar.addEventListener('mousedown', (e) => {
+                e.stopPropagation();
+                handleUserActivity();
+            });
+
+            // ==================== 初始化 ====================
+            function init() {
+                loadTheme();
+                loadFontSettings();
+                bindSystemThemeListener();
+                renderAllSites();
+
+                // 设置默认跳转目标显示
+                if (defaultSite) {
+                    countdownDest.textContent = defaultSite.name;
+                    countdownRemaining = COUNTDOWN_SECONDS;
+                    updateCountdownDisplay();
+                    bindActivityListeners();
+                    startCountdown();
+                } else {
+                    // 没有默认跳转目标，隐藏倒计时区域
+                    countdownArea.style.display = 'none';
+                }
+            }
+
+            // ==================== 页面卸载清理 ====================
+            window.addEventListener('beforeunload', () => {
+                if (countdownTimer) clearInterval(countdownTimer);
+                if (inactivityTimer) clearTimeout(inactivityTimer);
+                unbindActivityListeners();
+            });
+
+            // ==================== 启动 ====================
+            init();
+
+            // ==================== 调试：在控制台暴露配置查看 ====================
+            console.log('🌐 导航页已就绪');
+            if (defaultSite) {
+                console.log(`⏱ 默认跳转目标: ${defaultSite.name} (${defaultSite.url})`);
+                console.log(`📋 ${COUNTDOWN_SECONDS}秒无操作将自动跳转`);
+            } else {
+                console.log('ℹ️ 未设置默认跳转目标，自动跳转已禁用');
+            }
+            console.log('💡 修改 siteConfig 对象来配置站点列表');
+            console.log('🎨 主题和字体设置会自动保存到本地存储');
+        })();
+    </script>
+</body>
+</html>
